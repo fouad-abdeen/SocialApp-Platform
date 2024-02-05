@@ -1,0 +1,120 @@
+<div class="auth-container" *ngIf="!signedUp">
+  <h1>Sign Up to SocialApp</h1>
+
+  <div class="illustration">
+    <img src="../../../assets/images/signup.png" alt="SocialApp Illustration" />
+  </div>
+
+  <form class="auth-form">
+    <div class="form-text text-center mb-3 text-dark">
+      Already Registered?
+      <a
+        routerLink="/login"
+        [state]="{ skipAuth: true }"
+        class="text-dark fw-bold"
+      >
+        Login to your Account</a
+      >
+    </div>
+
+    <label for="firstName"><p>First Name:</p></label>
+    <input
+      class="form-control auth-input"
+      type="text"
+      id="firstName"
+      name="firstName"
+      [(ngModel)]="signupRequest.firstName"
+      required
+    />
+
+    <label for="lastName"><p>Last Name:</p></label>
+    <input
+      class="form-control auth-input"
+      type="text"
+      id="lastName"
+      name="lastName"
+      [(ngModel)]="signupRequest.lastName"
+      required
+    />
+
+    <label for="username"><p>Username:</p></label>
+    <input
+      class="form-control auth-input"
+      type="text"
+      id="username"
+      name="username"
+      [(ngModel)]="signupRequest.username"
+      required
+    />
+
+    <label for="email"><p>Email:</p></label>
+    <input
+      class="form-control auth-input"
+      type="email"
+      id="email"
+      name="email"
+      [(ngModel)]="signupRequest.email"
+      required
+    />
+
+    <label for="password"><p>Password:</p></label>
+    <input
+      class="form-control auth-input"
+      [type]="showPassword ? 'text' : 'password'"
+      id="password"
+      name="password"
+      [(ngModel)]="signupRequest.password"
+      required
+    />
+
+    <label for="confirmPassword"><p>Confirm Password:</p></label>
+    <input
+      class="form-control auth-input"
+      [type]="showPassword ? 'text' : 'password'"
+      id="passwordConfirm"
+      name="passwordConfirm"
+      [(ngModel)]="signupRequest.passwordConfirm"
+      required
+    />
+
+    <input
+      type="checkbox"
+      class="form-check-input"
+      name="showPassword"
+      [(ngModel)]="showPassword"
+      (click)="showPassword = !showPassword"
+    />
+    <p>Show password</p>
+
+    <button
+      class="primary-button"
+      [ngClass]="{
+        'disabled-button': !canAttemptSignup()
+      }"
+      [disabled]="!canAttemptSignup()"
+      (click)="signup()"
+    >
+      Register
+    </button>
+  </form>
+</div>
+
+<div class="auth-container" *ngIf="signedUp">
+  <h1>Signed Up Successfully!</h1>
+
+  <div class="illustration">
+    <img
+      src="../../../assets/images/mail-sent.png"
+      alt="SocialApp Illustration"
+    />
+  </div>
+
+  <p class="text-center mt-3">
+    A verification email has been sent to your email address. Please verify your
+    email to activate your account.
+  </p>
+
+  <div class="text-center mt-3">
+    <a routerLink="/home"> Go to the home page </a>
+  </div>
+</div>

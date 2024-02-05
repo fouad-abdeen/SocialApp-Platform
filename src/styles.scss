@@ -1,0 +1,96 @@
+/*** Button styles ***/
+button {
+  border: 1px solid #1da1f2;
+  border-radius: 0.25rem;
+  width: 100px;
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.primary-button {
+  background-color: #1da1f2;
+  color: #fff;
+  white-space: nowrap;
+  width: auto;
+}
+
+.secondary-button {
+  background-color: #fff;
+  color: #1da1f2;
+}
+
+.disabled-button {
+  border: 1px solid #cccccc;
+  background-color: #cccccc;
+  color: #888888;
+  cursor: not-allowed;
+}
+/*** Button styles ***/
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.auth-input {
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.illustration img {
+  width: 300px;
+  height: 300px;
+}
+
+@media screen and (max-width: 600px) {
+  .auth-input {
+    min-width: 300px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  button {
+    font-size: 0.8rem;
+  }
+
+  .illustration img {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media screen and (min-width: 601px) {
+  .auth-input {
+    min-width: 300px;
+  }
+}

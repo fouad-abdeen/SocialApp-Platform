@@ -1,0 +1,29 @@
+.content {
+  text-align: center;
+  margin-top: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+@media screen and (max-width: 600px) {
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .primary-button {
+    margin-bottom: 10px;
+  }
+}

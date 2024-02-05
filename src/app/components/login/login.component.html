@@ -1,0 +1,73 @@
+<div class="auth-container">
+  <h1>Login to SocialApp</h1>
+
+  <div class="illustration">
+    <img src="../../../assets/images/login.png" alt="SocialApp Illustration" />
+  </div>
+
+  <form class="auth-form">
+    <div class="form-text text-center mb-3 text-dark">
+      Not Registered?
+      <a
+        routerLink="/signup"
+        [state]="{ skipAuth: true }"
+        class="text-dark fw-bold"
+      >
+        Create an Account</a
+      >
+    </div>
+
+    <label for="usernameOrEmail"><p>Username or Email:</p></label>
+    <input
+      class="form-control auth-input user-identifier"
+      type="text"
+      id="usernameOrEmail"
+      name="usernameOrEmail"
+      placeholder="Username or Email"
+      [(ngModel)]="loginRequest.userIdentifier"
+      required
+    />
+
+    <label for="password"><p>Password:</p></label>
+    <input
+      class="form-control auth-input"
+      [type]="showPassword ? 'text' : 'password'"
+      id="password"
+      name="password"
+      placeholder="Password"
+      [(ngModel)]="loginRequest.password"
+      required
+    />
+
+    <input
+      type="checkbox"
+      class="form-check-input"
+      name="showPassword"
+      [(ngModel)]="showPassword"
+      (click)="showPassword = !showPassword"
+    />
+    <p>Show password</p>
+
+    <button
+      class="primary-button"
+      [disabled]="!canAttemptLogin()"
+      [ngClass]="{
+        'disabled-button': !canAttemptLogin()
+      }"
+      (click)="login()"
+    >
+      Sign In
+    </button>
+
+    <div class="form-text text-center mt-3 text-dark">
+      Forgot your Password?
+      <a
+        routerLink="/forgot-password"
+        [state]="{ skipAuth: true }"
+        class="text-dark fw-bold"
+      >
+        Request Password Reset</a
+      >
+    </div>
+  </form>
+</div>
