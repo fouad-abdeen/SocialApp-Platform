@@ -16,3 +16,11 @@ export class UserResponse {
   avatar!: string;
   verified!: boolean;
 }
+
+export class UserSearch {
+  id!: string;
+  username!: string;
+  firstName!: string;
+  lastName!: string;
+  avatar!: string;
+}

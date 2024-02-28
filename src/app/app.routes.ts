@@ -64,10 +64,28 @@ export const routes: Routes = [
   },
 
   {
-    path: 'profile',
+    path: 'search-results',
+    loadComponent: () =>
+      import('./components/search-results/search-results.component').then(
+        (mod) => mod.SearchResultsComponent
+      ),
+    canActivate: [authenticatedGuard],
+  },
+
+  {
+    path: 'profile/:username',
     loadComponent: () =>
       import('./components/profile/profile.component').then(
         (mod) => mod.ProfileComponent
+      ),
+    canActivate: [authenticatedGuard],
+  },
+
+  {
+    path: 'account-settings',
+    loadComponent: () =>
+      import('./components/account-settings/account-settings.component').then(
+        (mod) => mod.AccountSettingsComponent
       ),
     canActivate: [authenticatedGuard],
   },

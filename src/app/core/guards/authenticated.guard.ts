@@ -24,7 +24,7 @@ export const authenticatedGuard: CanActivateFn = async (route, state) => {
 
     if (response.data) {
       if (localStorage) {
-        localStorage.setItem('user', JSON.stringify(response.data));
+        localStorage.setItem('user', JSON.stringify(response.data.data));
         // Set userExpiresAt to 3 minutes from now
         localStorage.setItem(
           'userExpiresAt',

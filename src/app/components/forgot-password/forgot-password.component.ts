@@ -15,6 +15,10 @@ import { AuthService } from '@core/services/auth.service';
       h1 {
         margin-bottom: 20px;
       }
+
+      .auth-container {
+        min-height: 120vh;
+      }
     `,
   ],
 })

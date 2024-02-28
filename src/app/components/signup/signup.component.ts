@@ -17,6 +17,10 @@ import { CommonModule } from '@angular/common';
       h1 {
         margin-bottom: 20px;
       }
+
+      .auth-container {
+        min-height: 240vh;
+      }
     `,
   ],
 })

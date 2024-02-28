@@ -11,7 +11,13 @@ import { AuthService } from '@core/services/auth.service';
   imports: [CommonModule, FormsModule, HttpClientModule],
   providers: [AuthService],
   templateUrl: './reset-password.component.html',
-  styles: [],
+  styles: [
+    `
+      .auth-container {
+        min-height: 150vh;
+      }
+    `,
+  ],
 })
 export class ResetPasswordComponent {
   newPassword = '';

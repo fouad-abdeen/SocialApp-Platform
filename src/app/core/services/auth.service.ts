@@ -1,19 +1,16 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginRequest, SignupRequest } from '../types/api-requests';
 import { BaseResponse, UserResponse } from '../types/api-responses';
 import { Router } from '@angular/router';
 import { environment } from '@env/environment';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly baseUrl = environment.serverUrl;
+  private readonly baseUrl = `${environment.serverUrl}/auth`;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -26,7 +23,7 @@ export class AuthService {
 
   login(data: LoginRequest): void {
     this.http
-      .post<BaseResponse<UserResponse>>(`${this.baseUrl}/auth/login`, data, {
+      .post<BaseResponse<UserResponse>>(`${this.baseUrl}/login`, data, {
         withCredentials: true,
         observe: 'response',
       })
@@ -38,9 +35,23 @@ export class AuthService {
       });
   }
 
+  logout(): void {
+    this.http
+      .get<BaseResponse<null>>(`${this.baseUrl}/logout`, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: () => {
+          localStorage.removeItem('user');
+          localStorage.removeItem('userExpiresAt');
+          this.router.navigate(['/']);
+        },
+      });
+  }
+
   signup(data: SignupRequest, onSuccess: () => void): void {
     this.http
-      .post<BaseResponse<UserResponse>>(`${this.baseUrl}/auth/signup`, data, {
+      .post<BaseResponse<UserResponse>>(`${this.baseUrl}/signup`, data, {
         withCredentials: true,
         observe: 'response',
       })
@@ -54,7 +65,7 @@ export class AuthService {
 
   requestPasswordReset(email: string, onSuccess: () => void): void {
     this.http
-      .get<BaseResponse<null>>(`${this.baseUrl}/auth/password`, {
+      .get<BaseResponse<null>>(`${this.baseUrl}/password`, {
         params: { email },
         observe: 'response',
       })
@@ -66,7 +77,7 @@ export class AuthService {
   resetPassword(password: string, token: string, onSuccess: () => void): void {
     this.http
       .post<BaseResponse<null>>(
-        `${this.baseUrl}/auth/password`,
+        `${this.baseUrl}/password`,
         { token, password },
         {
           observe: 'response',
@@ -79,14 +90,24 @@ export class AuthService {
 
   verifyEmailAddress(token: string, onSuccess: () => void): void {
     this.http
-      .put<BaseResponse<null>>(
-        `${this.baseUrl}/auth/email/verify?token=${token}`,
-        {
-          observe: 'response',
-        }
-      )
+      .put<BaseResponse<null>>(`${this.baseUrl}/email/verify?token=${token}`, {
+        observe: 'response',
+      })
       .subscribe({
         next: onSuccess,
+      });
+  }
+
+  getAuthenticatedUser(
+    callback: (response: HttpResponse<BaseResponse<UserResponse>>) => void
+  ) {
+    this.http
+      .get<BaseResponse<UserResponse>>(`${this.baseUrl}/user`, {
+        withCredentials: true,
+        observe: 'response',
+      })
+      .subscribe({
+        next: callback.bind(this),
       });
   }
 }
