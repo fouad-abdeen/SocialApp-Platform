@@ -24,3 +24,19 @@ export class UserSearch {
   lastName!: string;
   avatar!: string;
 }
+
+export class Post {
+  id!: string;
+  user!: {
+    username: string;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+  };
+  content!: string;
+  likes!: string[];
+  comments!: string[];
+  image!: string;
+  createdAt!: string;
+  updatedAt!: string;
+}

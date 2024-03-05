@@ -1,0 +1,32 @@
+<div class="post-wrap">
+  <div class="post-header">
+    <img
+      [src]="getAvatar(post.user.avatar)"
+      alt=""
+      class="avatar rounded-circle"
+    />
+    <div class="post-header-info">
+      {{ post.user.firstName + " " + post.user.lastName }}
+      <span>{{ post.user.username }}</span
+      ><span>. {{ post.createdAt | date : "short" }}</span>
+      <p>
+        {{ post.content }}
+      </p>
+    </div>
+  </div>
+  <div class="post-img-wrap" *ngIf="post.image">
+    <img [src]="getImage(post.image)" alt="" class="post-img" />
+  </div>
+
+  <div class="post-info-counts">
+    <div class="comments">
+      <i class="far fa-comment me-2"></i>
+      <div class="comment-count">{{ post.comments.length }}</div>
+    </div>
+
+    <div class="likes">
+      <i class="far fa-heart me-2"></i>
+      <div class="likes-count">{{ post.likes.length }}</div>
+    </div>
+  </div>
+</div>

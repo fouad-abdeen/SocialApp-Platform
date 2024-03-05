@@ -1,0 +1,57 @@
+<div class="container search-results-container">
+  <div class="illustration d-flex justify-content-center">
+    <img src="../../../assets/images/search.png" alt="SocialApp Illustration" />
+  </div>
+
+  <h2 class="mb-4">Search Results</h2>
+
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="list-group">
+        <div
+          class="list-group-item list-group-item-action"
+          *ngFor="let user of searchResults"
+        >
+          <a routerLink="/profile/{{ user.username }}" class="no-style-link">
+            <img
+              [src]="getAvatar(user.avatar)"
+              class="avatar rounded-circle me-3"
+              alt="User Avatar"
+            />
+          </a>
+          <div class="d-flex align-items-center justify-content-between w-100">
+            <a routerLink="/profile/{{ user.username }}" class="no-style-link">
+              <div class="user-info">
+                <h5 class="mb-1">{{ user.username }}</h5>
+                <p class="mb-1">{{ user.firstName }} {{ user.lastName }}</p>
+              </div>
+            </a>
+            <button class="btn btn-primary resized-rounded-button">
+              Follow
+            </button>
+          </div>
+        </div>
+        <div *ngIf="searchResults.length === 0" class="text-center mt-3">
+          <h3>No users found</h3>
+        </div>
+        <div
+          *ngIf="searchResults.length > 0 && !noMoreResults"
+          class="text-center mt-3"
+        >
+          <button
+            (click)="loadMoreResults()"
+            class="btn btn-primary resized-rounded-button btn-dark mb-2"
+          >
+            Load more
+          </button>
+        </div>
+        <div
+          *ngIf="searchResults.length > 0 && noMoreResults"
+          class="text-center mt-4 mb-4"
+        >
+          <h4>No more results</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

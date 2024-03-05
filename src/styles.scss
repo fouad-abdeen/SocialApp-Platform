@@ -27,6 +27,12 @@ button {
   color: #888888;
   cursor: not-allowed;
 }
+
+.resized-rounded-button {
+  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+}
 /*** Button styles ***/
 
 .auth-form {

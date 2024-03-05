@@ -1,0 +1,66 @@
+.post-submit-box {
+  margin-top: 20px;
+  border: 1px solid #e1e8ed;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.post-submit-box textarea {
+  border: none;
+  resize: none;
+  width: 100%;
+}
+
+.post-submit-button:hover {
+  background-color: #fff;
+  color: #1da1f2;
+  border-width: 1px;
+  border-color: #1da1f2;
+}
+
+.post-submit-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.post-submit-icons {
+  display: flex;
+}
+
+.post-submit-icons i {
+  margin-right: 10px;
+  color: #1da1f2;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 276px) {
+  .post-submit-box {
+    min-width: 200px;
+  }
+}
+
+@media screen and (min-width: 376px) {
+  .post-submit-box {
+    min-width: 300px;
+  }
+}
+
+@media screen and (min-width: 476px) {
+  .post-submit-box {
+    min-width: 400px;
+  }
+}
+
+@media screen and (min-width: 576px) {
+  .post-submit-box {
+    min-width: 500px;
+  }
+}
+
+@media screen and (min-width: 676px) {
+  .post-submit-box {
+    min-width: 600px;
+  }
+}

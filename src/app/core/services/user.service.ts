@@ -32,7 +32,7 @@ export class UserService {
   ): void {
     this.http
       .get<BaseResponse<UserSearch[]>>(
-        `${this.baseUrl}/search?usernameQuery=${usernameQuery}&limt=5${
+        `${this.baseUrl}/search?usernameQuery=${usernameQuery}&limit=5${
           lastDocumentId ? `&lastDocumentId=${lastDocumentId}` : ''
         }`,
         {

@@ -85,7 +85,7 @@
     *ngFor="let user of searchResults"
     class="list-group-item list-group-item-action"
     [routerLink]="'/profile/' + user.username"
-    (click)="setSearch(user.username)"
+    (click)="resetSearch()"
   >
     <div class="d-flex align-items-center">
       <img
@@ -96,6 +96,20 @@
       <div style="margin-left: 10px">
         <h5 class="mb-0">{{ user.username }}</h5>
         <p class="mb-0">{{ user.firstName + " " + user.lastName }}</p>
+      </div>
+    </div>
+  </a>
+  <a
+    *ngIf="searchResults.length > 0"
+    class="list-group-item list-group-item-action"
+    routerLink="/search-results"
+    [queryParams]="{ query: usernameQuery }"
+    (click)="resetSearch()"
+  >
+    <div class="d-flex align-items-center">
+      <i class="fas fa-search"></i>
+      <div style="margin-left: 10px">
+        <h5 class="mb-0">Search for "{{ usernameQuery }}"</h5>
       </div>
     </div>
   </a>

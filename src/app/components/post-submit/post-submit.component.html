@@ -1,0 +1,45 @@
+<div class="post-submit-box">
+  <form [formGroup]="postForm">
+    <textarea
+      class="form-control"
+      placeholder="What's happening?"
+      rows="3"
+      formControlName="content"
+      maxlength="1500"
+    ></textarea>
+
+    <div
+      class="char-counter"
+      [style.color]="
+        (postForm.controls.content.value ?? '').length < 15 ? 'red' : 'black'
+      "
+    >
+      {{ (postForm.controls.content.value ?? "").length }} / 1500
+    </div>
+
+    <div class="post-submit-footer">
+      <div class="post-submit-icons">
+        <input
+          type="file"
+          #imageInput
+          style="display: none"
+          (change)="onFileChange($event)"
+        />
+        <i class="far fa-image" (click)="imageInput.click()"></i>
+        <span *ngIf="selectedFileName">
+          {{ selectedFileName }}
+          <a type="button" (click)="removeFile()">x</a>
+        </span>
+      </div>
+
+      <button
+        type="submit"
+        class="btn primary-button post-submit-button"
+        [disabled]="!postForm.valid"
+        (click)="submitPost()"
+      >
+        Post
+      </button>
+    </div>
+  </form>
+</div>

@@ -7,6 +7,7 @@ import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
 import { BaseResponse, UserSearch } from '@core/types/api-responses';
 import { environment } from '@env/environment';
+import { getAvatar } from '@core/utils';
 
 @Component({
   selector: 'app-navbar',
@@ -19,34 +20,37 @@ export class NavbarComponent {
   readonly filesUrl = `${environment.serverUrl}/files`;
   usernameQuery: string = '';
   searchResults: UserSearch[] = [];
+  getAvatar = getAvatar;
 
   constructor(
     public userService: UserService,
     public authService: AuthService
   ) {}
 
-  getAvatar(avatar?: string): string {
-    return avatar
-      ? `${environment.serverUrl}/files?id=${avatar}`
-      : '../../../assets/images/avatar.png';
-  }
-
   searchForUsers() {
     if (!this.usernameQuery) {
       this.searchResults = [];
       return;
     }
+
     this.userService.search(
       this.usernameQuery,
       undefined,
       (response: HttpResponse<BaseResponse<UserSearch[]>>) => {
-        this.searchResults = (response.body ?? {}).data ?? [];
+        const { data } = response.body ?? {};
+
+        if (!data || (data && data.length === 0)) {
+          this.searchResults = [];
+          return;
+        }
+
+        this.searchResults = data;
       }
     );
   }
 
-  setSearch(value: string) {
-    this.usernameQuery = value;
+  resetSearch() {
+    this.usernameQuery = '';
     this.searchResults = [];
   }
 }
