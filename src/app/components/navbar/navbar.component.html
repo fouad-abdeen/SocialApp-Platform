@@ -52,14 +52,12 @@
             <li>
               <a
                 class="dropdown-item"
-                [routerLink]="
-                  '/profile/' + userService.getCurrentProfile().username
-                "
+                [routerLink]="'/profile/' + loggedInUser.username"
                 ><img
-                  [src]="getAvatar(userService.getCurrentProfile().avatar)"
+                  [src]="getAvatar(loggedInUser.avatar)"
                   class="rounded-circle mini-avatar item-icon"
                   alt="User Avatar"
-                />Profile</a
+                />{{ loggedInUser.firstName }} ({{ loggedInUser.username }})</a
               >
             </li>
             <li>
@@ -68,7 +66,7 @@
               >
             </li>
             <li><hr class="dropdown-divider" /></li>
-            <li (click)="authService.logout()">
+            <li (click)="logout()">
               <a class="dropdown-item"
                 ><i class="fas fa-sign-out-alt item-icon"></i> Log Out</a
               >
@@ -94,8 +92,15 @@
         alt="User Avatar"
       />
       <div style="margin-left: 10px">
-        <h5 class="mb-0">{{ user.username }}</h5>
-        <p class="mb-0">{{ user.firstName + " " + user.lastName }}</p>
+        <h5 class="mb-0">
+          {{ user.username }}
+        </h5>
+        <p class="mb-0">
+          {{ user.firstName + " " + user.lastName }}
+          <!-- <small *ngIf="loggedInUser.followings.includes(user.id)"
+            >Following</small
+          > -->
+        </p>
       </div>
     </div>
   </a>

@@ -3,7 +3,11 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UserService } from '@core/services/user.service';
-import { BaseResponse, UserSearch } from '@core/types/api-responses';
+import {
+  BaseResponse,
+  UserResponse,
+  UserSearch,
+} from '@core/types/api-responses';
 import { getAvatar } from '@core/utils';
 
 @Component({
@@ -20,6 +24,7 @@ export class SearchResultsComponent {
   noMoreResults = false;
   loading = false;
   getAvatar = getAvatar;
+  loggedInUser = <UserResponse>{};
 
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +35,19 @@ export class SearchResultsComponent {
     this.route.queryParams.subscribe((params) => {
       this.query = params['query'];
       this.loadMoreResults();
+    });
+    this.loggedInUser = this.userService.get();
+  }
+
+  followUser(userId: string): void {
+    this.userService.follow(userId, () => {
+      this.loggedInUser = this.userService.get();
+    });
+  }
+
+  unfollowUser(userId: string): void {
+    this.userService.unfollow(userId, () => {
+      this.loggedInUser = this.userService.get();
     });
   }
 

@@ -5,7 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
-import { BaseResponse, UserSearch } from '@core/types/api-responses';
+import {
+  BaseResponse,
+  UserResponse,
+  UserSearch,
+} from '@core/types/api-responses';
 import { environment } from '@env/environment';
 import { getAvatar } from '@core/utils';
 
@@ -18,14 +22,23 @@ import { getAvatar } from '@core/utils';
 })
 export class NavbarComponent {
   readonly filesUrl = `${environment.serverUrl}/files`;
-  usernameQuery: string = '';
-  searchResults: UserSearch[] = [];
+  loggedInUser = <UserResponse>{};
+  searchResults = <UserSearch[]>[];
+  usernameQuery = '';
   getAvatar = getAvatar;
 
   constructor(
-    public userService: UserService,
-    public authService: AuthService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
+
+  ngOnInit() {
+    this.loggedInUser = this.userService.get();
+  }
+
+  logout() {
+    this.authService.logout();
+  }
 
   searchForUsers() {
     if (!this.usernameQuery) {

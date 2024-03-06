@@ -10,19 +10,24 @@ import { AuthService } from './auth.service';
 })
 export class UserService {
   private readonly baseUrl = `${environment.serverUrl}/users`;
+  private user = <UserResponse>{};
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private authService: AuthService
-  ) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   isAuthenticated(): boolean {
     return !!localStorage.getItem('user');
   }
 
-  getCurrentProfile(): UserResponse {
-    return <UserResponse>JSON.parse(localStorage.getItem('user') ?? 'null');
+  set(user: UserResponse): void {
+    this.user = user;
+  }
+
+  get(): UserResponse {
+    if (!this.user.id)
+      this.user = <UserResponse>(
+        JSON.parse(<string>localStorage.getItem('user'))
+      );
+    return this.user;
   }
 
   search(
@@ -42,6 +47,38 @@ export class UserService {
       )
       .subscribe({
         next: searchCallback.bind(this),
+      });
+  }
+
+  follow(userId: string, callback: () => void): void {
+    this.http
+      .post<BaseResponse<null>>(`${this.baseUrl}/${userId}/follow`, null, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: () => {
+          const user = this.get();
+          user.followings.push(userId);
+          localStorage.setItem('user', JSON.stringify(user));
+          this.set(user);
+          callback();
+        },
+      });
+  }
+
+  unfollow(userId: string, callback: () => void): void {
+    this.http
+      .post<BaseResponse<null>>(`${this.baseUrl}/${userId}/unfollow`, null, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: () => {
+          const user = this.get();
+          user.followings = this.user.followings.filter((id) => id !== userId);
+          localStorage.setItem('user', JSON.stringify(user));
+          this.set(user);
+          callback();
+        },
       });
   }
 }

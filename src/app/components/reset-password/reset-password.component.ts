@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import { UserService } from '@core/services/user.service';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, RouterLink],
   providers: [AuthService],
   templateUrl: './reset-password.component.html',
   styles: [
@@ -27,9 +28,14 @@ export class ResetPasswordComponent {
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
+
+  isAuthenticatedUser(): boolean {
+    return this.userService.isAuthenticated();
+  }
 
   resetPassword(): void {
     if (this.newPassword !== this.passwordConfirm) {

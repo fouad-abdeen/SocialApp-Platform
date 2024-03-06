@@ -12,13 +12,18 @@ import { UserService } from './user.service';
 export class AuthService {
   private readonly baseUrl = `${environment.serverUrl}/auth`;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private userService: UserService
+  ) {}
 
   private handleAuthentication(
     response: HttpResponse<BaseResponse<UserResponse>>
   ): void {
-    const user = (response.body ?? {}).data;
+    const user = <UserResponse>(response.body && response.body.data);
     localStorage.setItem('user', JSON.stringify(user));
+    this.userService.set(user);
   }
 
   login(data: LoginRequest): void {
