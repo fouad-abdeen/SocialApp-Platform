@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PostService } from '../../core/services/post.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpResponse } from '@angular/common/http';
+import { UserService } from '@core/services/user.service';
+import { BaseResponse, Post } from '@core/types/api-responses';
 
 @Component({
   selector: 'app-post-submit',
@@ -26,7 +28,11 @@ export class PostSubmitComponent {
     image: [''],
   });
 
-  constructor(private fb: FormBuilder, private postService: PostService) {}
+  constructor(
+    private fb: FormBuilder,
+    private postService: PostService,
+    private userService: UserService
+  ) {}
 
   onFileChange(event: any) {
     if (event.target.files && event.target.files.length) {
@@ -43,9 +49,12 @@ export class PostSubmitComponent {
 
   submitPost() {
     if (this.postForm.valid) {
-      this.postService.submitPost(
+      this.postService.submit(
         <string>this.postForm.value.content,
-        () => {
+        (response: HttpResponse<BaseResponse<Post>>) => {
+          const user = this.userService.get();
+          response.body && user.posts.push(response.body.data.id);
+          this.userService.set(user);
           this.postForm.reset();
         },
         <string>this.postForm.value.image

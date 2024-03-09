@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { SignupRequest } from '../../core/types/api-requests';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-signup',
@@ -29,7 +29,7 @@ export class SignupComponent {
   showPassword = false;
   signedUp = false;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, public location: Location) {
     this.signupRequest = new SignupRequest();
   }
 

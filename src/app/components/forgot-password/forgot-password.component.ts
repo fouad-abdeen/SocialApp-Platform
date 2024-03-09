@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -27,7 +27,7 @@ export class ForgotPasswordComponent {
   email = '';
   requestedPasswordReset = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, public location: Location) {}
 
   requestPasswordReset(): void {
     this.authService.requestPasswordReset(this.email, () => {

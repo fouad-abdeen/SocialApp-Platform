@@ -1,9 +1,8 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BaseResponse, UserResponse, UserSearch } from '../types/api-responses';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { environment } from '@env/environment';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +11,14 @@ export class UserService {
   private readonly baseUrl = `${environment.serverUrl}/users`;
   private user = <UserResponse>{};
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private location: Location) {}
 
   isAuthenticated(): boolean {
     return !!localStorage.getItem('user');
   }
 
   set(user: UserResponse): void {
+    localStorage.setItem('user', JSON.stringify(user));
     this.user = user;
   }
 
@@ -28,6 +28,28 @@ export class UserService {
         JSON.parse(<string>localStorage.getItem('user'))
       );
     return this.user;
+  }
+
+  getByUsername(
+    username: string,
+    successCallback: (
+      response: HttpResponse<BaseResponse<UserResponse>>
+    ) => void
+  ): void {
+    this.http
+      .get<BaseResponse<UserResponse>>(`${this.baseUrl}?username=${username}`, {
+        withCredentials: true,
+        observe: 'response',
+      })
+      .subscribe({
+        next: successCallback.bind(this),
+        error: () => {
+          alert(
+            'The requested user profile could not be found. Please check the username and try again.'
+          );
+          this.location.back();
+        },
+      });
   }
 
   search(

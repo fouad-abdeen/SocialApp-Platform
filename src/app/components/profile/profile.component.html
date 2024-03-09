@@ -1,0 +1,81 @@
+<div class="profile-container">
+  <div class="profile-header d-flex">
+    <div class="profile-avatar">
+      <img [src]="getAvatar(user.avatar)" alt="Avatar" />
+    </div>
+    <div class="profile-info">
+      <div class="d-flex justify-content-start align-items-end mb-3">
+        <h1 class="profile-username">{{ user.username }}</h1>
+        <button *ngIf="!user.id" class="primary-button resized-rounded-button">
+          Follow
+        </button>
+        <button *ngIf="user.id" class="dark-button resized-rounded-button">
+          Edit Profile
+        </button>
+      </div>
+      <div class="profile-stats mb-3">
+        <div class="profile-stat">
+          <span class="stat-number">{{ user.posts.length }}</span>
+          <span class="stat-label">Posts</span>
+        </div>
+        <div class="profile-stat">
+          <span class="stat-number">{{ user.followers.length }}</span>
+          <span class="stat-label">Followers</span>
+        </div>
+        <div class="profile-stat">
+          <span class="stat-number">{{ user.followings.length }}</span>
+          <span class="stat-label">Following</span>
+        </div>
+      </div>
+      <h2 class="profile-fullname mb-3">
+        {{ user.firstName + " " + user.lastName }}
+      </h2>
+      <p class="profile-bio">{{ user.bio }}</p>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<div
+  *ngIf="loggedInUser.id"
+  class="d-flex flex-column flex-lg-row justify-content-center align-items-center"
+>
+  <div class="illustration">
+    <img
+      src="../../../assets/images/post-submit-2.png"
+      alt="SocialApp Illustration"
+    />
+  </div>
+
+  <app-post-submit class="mb-3"></app-post-submit>
+</div>
+
+<hr *ngIf="loggedInUser.id" />
+
+<div *ngFor="let post of posts">
+  <app-post [post]="post"></app-post>
+</div>
+
+<div *ngIf="!noMorePosts && posts.length > 0" class="text-center mt-3 mb-3">
+  <button
+    (click)="loadMorePosts()"
+    class="btn btn-primary btn-dark resized-rounded-button"
+  >
+    Load more
+  </button>
+</div>
+
+<div *ngIf="noMorePosts && posts.length > 0" class="text-center mt-3 mb-3">
+  <h4>No more posts</h4>
+</div>
+
+<div *ngIf="posts.length === 0" class="mt-5 mb-5">
+  <div class="illustration d-flex justify-content-center">
+    <img
+      src="../../../assets/images/empty-feed.png"
+      alt="SocialApp Illustration"
+    />
+  </div>
+  <h3 class="text-center mt-5 mb-5">No posts found</h3>
+</div>

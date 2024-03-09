@@ -82,10 +82,10 @@ export const routes: Routes = [
   },
 
   {
-    path: 'account-settings',
+    path: 'post/:postId',
     loadComponent: () =>
-      import('./components/account-settings/account-settings.component').then(
-        (mod) => mod.AccountSettingsComponent
+      import('./components/post-view/post-view.component').then(
+        (mod) => mod.PostViewComponent
       ),
     canActivate: [authenticatedGuard],
   },

@@ -16,6 +16,36 @@ button {
   width: auto;
 }
 
+.primary-button:hover {
+  background-color: #0d95de;
+  color: #f2f2f2;
+}
+
+.danger-button {
+  background-color: #dc3545;
+  color: #fff;
+  white-space: nowrap;
+  width: auto;
+}
+
+.danger-button:hover {
+  background-color: #c82333;
+  color: #f2f2f2;
+}
+
+.dark-button {
+  background-color: #343a40;
+  border-color: #343a40;
+  color: #fff;
+  white-space: nowrap;
+  width: auto;
+}
+
+.dark-button:hover {
+  background-color: #23272b;
+  color: #f2f2f2;
+}
+
 .secondary-button {
   background-color: #fff;
   color: #1da1f2;
@@ -43,7 +73,7 @@ button {
 .back-button {
   font-size: 1.5rem;
   margin: 1rem;
-  color: "1da1f2";
+  color: #1da1f2;
   cursor: pointer;
 }
 /*** Button styles ***/

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { LoginRequest } from '../../core/types/api-requests';
 import { AuthService } from '../../core/services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +28,7 @@ export class LoginComponent {
   readonly loginRequest: LoginRequest;
   showPassword = false;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, public location: Location) {
     this.loginRequest = new LoginRequest();
   }
 

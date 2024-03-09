@@ -28,14 +28,14 @@
             </a>
             <button
               *ngIf="!this.loggedInUser.followings.includes(user.id)"
-              class="btn btn-primary resized-rounded-button"
+              class="btn primary-button resized-rounded-button"
               (click)="followUser(user.id)"
             >
               Follow
             </button>
             <button
               *ngIf="this.loggedInUser.followings.includes(user.id)"
-              class="btn btn-danger resized-rounded-button"
+              class="btn danger-button resized-rounded-button"
               (click)="unfollowUser(user.id)"
             >
               Unfollow

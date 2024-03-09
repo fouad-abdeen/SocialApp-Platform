@@ -22,7 +22,6 @@ export class AuthService {
     response: HttpResponse<BaseResponse<UserResponse>>
   ): void {
     const user = <UserResponse>(response.body && response.body.data);
-    localStorage.setItem('user', JSON.stringify(user));
     this.userService.set(user);
   }
 

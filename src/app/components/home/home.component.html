@@ -1,7 +1,7 @@
 <div class="container">
   <div class="illustration d-flex justify-content-center">
     <img
-      src="../../../assets/images/post-submit.png"
+      src="../../../assets/images/post-submit-1.png"
       alt="SocialApp Illustration"
     />
   </div>
@@ -9,7 +9,9 @@
   <div class="post-submit-box">
     <app-post-submit></app-post-submit>
   </div>
+
   <hr />
+
   <div *ngFor="let post of posts">
     <app-post [post]="post"></app-post>
   </div>

@@ -49,11 +49,13 @@ nav {
 .avatar {
   width: 40px;
   height: 40px;
+  object-fit: cover;
 }
 
 .mini-avatar {
   width: 20px;
   height: 20px;
+  object-fit: cover;
 }
 
 .dropdown-item {

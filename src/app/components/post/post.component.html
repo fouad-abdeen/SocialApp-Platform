@@ -2,15 +2,31 @@
   <div class="post-header">
     <img
       [src]="getAvatar(post.user.avatar)"
+      [routerLink]="'/profile/' + post.user.username"
       alt=""
       class="avatar rounded-circle"
     />
+
     <div class="post-header-info">
-      {{ post.user.firstName + " " + post.user.lastName }}
-      <span>{{ post.user.username }}</span
-      ><span>. {{ post.createdAt | date : "short" }}</span>
+      <a [routerLink]="'/profile/' + post.user.username">
+        {{ post.user.firstName + " " + post.user.lastName }}
+      </a>
+
+      <span [routerLink]="'/profile/' + post.user.username">
+        {{ post.user.username }}</span
+      >
+
+      <span
+        [routerLink]="'/post/' + post.id"
+        [queryParams]="{ action: 'view' }"
+      >
+        . {{ post.createdAt | date : "short" }}
+      </span>
+
       <p>
-        {{ post.content }}
+        <a [routerLink]="'/post/' + post.id" [queryParams]="{ action: 'view' }">
+          {{ post.content }}
+        </a>
       </p>
     </div>
   </div>
@@ -20,12 +36,21 @@
 
   <div class="post-info-counts">
     <div class="comments">
-      <i class="far fa-comment me-2"></i>
-      <div class="comment-count">{{ post.comments.length }}</div>
+      <i
+        [routerLink]="'/post/' + post.id"
+        [queryParams]="{ action: 'comment' }"
+        class="far fa-comment me-2"
+      ></i>
+      <div class="comment-count">
+        {{ post.comments.length }}
+      </div>
     </div>
 
     <div class="likes">
-      <i class="far fa-heart me-2"></i>
+      <i
+        [class]="isLikedPost ? 'fas fa-heart me-2' : 'far fa-heart me-2'"
+        (click)="isLikedPost ? unlike(post.id) : like(post.id)"
+      ></i>
       <div class="likes-count">{{ post.likes.length }}</div>
     </div>
   </div>
