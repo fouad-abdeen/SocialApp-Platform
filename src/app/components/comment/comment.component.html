@@ -1,0 +1,102 @@
+<div class="comment-wrap">
+  <div class="comment-header">
+    <img
+      [src]="getAvatar(comment.user.avatar)"
+      [routerLink]="'/profile/' + comment.user.username"
+      alt=""
+      class="avatar rounded-circle"
+    />
+
+    <div class="comment-header-info">
+      <a [routerLink]="'/profile/' + comment.user.username">
+        {{ comment.user.firstName + " " + comment.user.lastName }}
+      </a>
+
+      <span [routerLink]="'/profile/' + comment.user.username">
+        {{ comment.user.username }}</span
+      >
+
+      <span style="cursor: auto">
+        . {{ comment.updatedAt | date : "short" }}
+      </span>
+
+      <i
+        *ngIf="isCommentOwner()"
+        class="fas fa-pen ms-3"
+        (mouseover)="canUpdate()"
+        (click)="attemptUpdate()"
+        #updateButton
+      ></i>
+      <i
+        *ngIf="isCommentOwner()"
+        class="fas fa-trash ms-3"
+        (click)="delete()"
+      ></i>
+
+      <p
+        *ngIf="!updating"
+        [innerHTML]="
+          viewSource === 'comment'
+            ? comment.content
+            : (comment.content
+              | truncate : 100 : 'fas fa-up-right-and-down-left-from-center')
+        "
+        [style]="viewSource === 'post' ? 'cursor: pointer' : ''"
+        (click)="viewSource === 'post' ? view('view') : null"
+      ></p>
+
+      <form *ngIf="updating" [formGroup]="updateForm" class="update-form">
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            id="update"
+            rows="3"
+            name="update"
+            formControlName="content"
+          ></textarea>
+          <div class="update-form-footer">
+            <div
+              class="char-counter"
+              [style.color]="
+                (updateForm.controls.content.value ?? '').length < 6
+                  ? 'red'
+                  : 'black'
+              "
+            >
+              {{ (updateForm.controls.content.value ?? "").length }} / 1000
+            </div>
+
+            <button
+              type="submit"
+              class="btn primary-button submission-button"
+              (click)="update()"
+              [disabled]="!updateForm.valid"
+            >
+              Update
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="comment-info-counts">
+    <div *ngIf="!comment.replyTo" class="replies">
+      <i
+        class="fas fa-reply me-2"
+        (click)="viewSource === 'post' ? view('reply') : reply()"
+      ></i>
+      <div class="reply-count">
+        {{ comment.replies.length }}
+      </div>
+    </div>
+
+    <div class="likes">
+      <i
+        [class]="isLiked ? 'fas fa-heart me-2' : 'far fa-heart me-2'"
+        (click)="isLiked ? unlike(comment.id) : like(comment.id)"
+      ></i>
+      <div class="likes-count">{{ comment.likes.length }}</div>
+    </div>
+  </div>
+</div>

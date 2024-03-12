@@ -76,6 +76,13 @@ button {
   color: #1da1f2;
   cursor: pointer;
 }
+
+.submission-button:hover {
+  background-color: #fff;
+  color: #1da1f2;
+  border-width: 1px;
+  border-color: #1da1f2;
+}
 /*** Button styles ***/
 
 .auth-form {

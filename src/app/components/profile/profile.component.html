@@ -43,18 +43,26 @@
 >
   <div class="illustration">
     <img
-      src="../../../assets/images/post-submit-2.png"
+      src="../../../assets/images/post-submit.png"
       alt="SocialApp Illustration"
     />
   </div>
 
-  <app-post-submit class="mb-3"></app-post-submit>
+  <app-post-submit
+    class="mb-3"
+    (postSubmitted)="addPost($event)"
+  ></app-post-submit>
 </div>
 
 <hr *ngIf="loggedInUser.id" />
 
 <div *ngFor="let post of posts">
-  <app-post [post]="post"></app-post>
+  <app-post
+    [post]="post"
+    [user]="user"
+    viewSource="elsewhere"
+    (postDeleted)="removePost($event)"
+  ></app-post>
 </div>
 
 <div *ngIf="!noMorePosts && posts.length > 0" class="text-center mt-3 mb-3">

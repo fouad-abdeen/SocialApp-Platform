@@ -1,0 +1,90 @@
+<div class="modal-header">
+  <h4 class="modal-title">Comment Details</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="closeModal()"
+  ></button>
+</div>
+
+<div class="modal-body">
+  <app-comment
+    [comment]="comment"
+    viewSource="comment"
+    (replyClicked)="focusOnReply()"
+    (commentDeleted)="removeComment($event)"
+  ></app-comment>
+
+  <div class="form-container">
+    <form [formGroup]="replyForm" class="reply-form">
+      <div class="form-group">
+        <textarea
+          class="form-control"
+          id="reply"
+          rows="3"
+          name="reply"
+          placeholder="Write a reply..."
+          formControlName="content"
+          #replyInput
+        ></textarea>
+        <div class="reply-form-footer">
+          <div
+            class="char-counter"
+            [style.color]="
+              (replyForm.controls.content.value ?? '').length < 6
+                ? 'red'
+                : 'black'
+            "
+          >
+            {{ (replyForm.controls.content.value ?? "").length }} / 1000
+          </div>
+
+          <button
+            type="submit"
+            class="btn primary-button submission-button"
+            (click)="reply()"
+            [disabled]="!replyForm.valid"
+          >
+            Reply
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngFor="let reply of replies" class="replies mt-3">
+    <app-comment
+      [comment]="reply"
+      viewSource="comment"
+      (replyClicked)="focusOnReply()"
+      (commentDeleted)="removeReply($event)"
+    ></app-comment>
+  </div>
+
+  <div
+    *ngIf="!noMoreReplies && replies.length > 0"
+    class="text-center mt-3 mb-3"
+  >
+    <button
+      (click)="loadMoreReplies()"
+      class="btn btn-primary btn-dark resized-rounded-button"
+    >
+      See more
+    </button>
+  </div>
+
+  <div *ngIf="replies.length === 0" class="text-center mt-3">
+    <p>No replies yet</p>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn dark-button resized-rounded-button"
+    (click)="closeModal()"
+  >
+    Close
+  </button>
+</div>

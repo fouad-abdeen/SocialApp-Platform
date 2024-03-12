@@ -8,67 +8,59 @@ span {
   cursor: pointer;
 }
 
-img {
-  max-width: 100%;
-}
-
 .avatar {
-  width: 50px;
-  height: 50px;
-  margin-right: 15px;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
   object-fit: cover;
   cursor: pointer;
 }
 
-.post-wrap {
-  max-width: 500px;
+.comment-wrap {
+  min-width: 400px;
+  max-width: 400px;
   background: #fff;
   margin: 0 auto;
-  margin-top: 50px;
   border-radius: 3px;
-  padding: 30px;
+  padding: 10px;
   border-bottom: 1px solid #e6ecf0;
 }
 
-.post-header {
+.comment-header {
   display: flex;
   align-items: flex-start;
   font-size: 14px;
 }
 
-.post-header-info {
+.comment-header-info {
   font-weight: bold;
 }
 
-.post-header-info span {
+.comment-header-info span {
   color: #657786;
   font-weight: normal;
   margin-left: 5px;
 }
 
-.post-header-info p {
+.comment-header-info p {
   font-weight: normal;
-  margin-top: 5px;
+  margin-top: 0px;
+  margin-bottom: 5px;
 }
 
-.post-img-wrap {
-  padding-left: 60px;
-}
-
-.post-info-counts {
+.comment-info-counts {
   display: flex;
-  margin-left: 60px;
-  margin-top: 10px;
+  margin-left: 45px;
 }
 
-.post-info-counts div {
+.comment-info-counts div {
   display: flex;
-  margin-right: 20px;
+  margin-right: 15px;
 }
 
-.post-info-counts div i {
+.comment-info-counts div i {
   color: #657786;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 .update-form {
@@ -92,28 +84,20 @@ textarea {
 }
 
 @media screen and (max-width: 430px) {
-  .post-header {
+  .comment-header {
     flex-direction: column;
   }
 
-  .post-header img {
-    margin-bottom: 20px;
+  .comment-header-info p {
+    margin-bottom: 15px;
   }
 
-  .post-header-info p {
-    margin-bottom: 30px;
-  }
-
-  .post-img-wrap {
-    padding-left: 0;
-  }
-
-  .post-info-counts {
+  .comment-info-counts {
     display: flex;
     margin-left: 0;
   }
 
-  .post-info-counts div {
+  .comment-info-counts div {
     margin-right: 10px;
   }
 }

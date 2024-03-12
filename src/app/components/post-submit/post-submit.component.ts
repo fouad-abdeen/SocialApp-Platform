@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output, input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PostService } from '../../core/services/post.service';
 import { HttpClientModule, HttpResponse } from '@angular/common/http';
 import { UserService } from '@core/services/user.service';
-import { BaseResponse, Post } from '@core/types/api-responses';
+import { BaseResponse, Post } from '@core/types/api-response.type';
 
 @Component({
   selector: 'app-post-submit',
@@ -14,9 +14,11 @@ import { BaseResponse, Post } from '@core/types/api-responses';
   styleUrl: './post-submit.component.scss',
 })
 export class PostSubmitComponent {
+  @Input() submissionFrom = 'profile';
+  @Output() postSubmitted = new EventEmitter<Post>();
   selectedFileName = '';
 
-  postForm = this.fb.group({
+  postForm = this.formBuilder.group({
     content: [
       '',
       [
@@ -29,7 +31,7 @@ export class PostSubmitComponent {
   });
 
   constructor(
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private postService: PostService,
     private userService: UserService
   ) {}
@@ -53,9 +55,11 @@ export class PostSubmitComponent {
         <string>this.postForm.value.content,
         (response: HttpResponse<BaseResponse<Post>>) => {
           const user = this.userService.get();
-          response.body && user.posts.push(response.body.data.id);
+          if (!response.body) return;
+          user.posts.push(response.body.data.id);
           this.userService.set(user);
           this.postForm.reset();
+          this.postSubmitted.emit(response.body.data);
         },
         <string>this.postForm.value.image
       );

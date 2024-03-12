@@ -3,8 +3,9 @@ import { PostComponent } from '../post/post.component';
 import { PostSubmitComponent } from '../post-submit/post-submit.component';
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
-import { BaseResponse, Post } from '@core/types/api-responses';
+import { BaseResponse, Post } from '@core/types/api-response.type';
 import { PostService } from '@core/services/post.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -19,10 +20,14 @@ export class HomeComponent {
   noMorePosts = false;
   lastPostId: string | undefined;
 
-  constructor(private postService: PostService) {}
+  constructor(private postService: PostService, private router: Router) {}
 
   ngOnInit() {
     this.loadMorePosts();
+  }
+
+  onPostSubmit(post: Post) {
+    this.router.navigate(['/post', post.id]);
   }
 
   loadMorePosts() {

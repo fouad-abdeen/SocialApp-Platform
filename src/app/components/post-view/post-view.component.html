@@ -1,0 +1,61 @@
+<app-post [post]="post" (postDeleted)="router.navigate(['/'])"></app-post>
+
+<div class="form-container">
+  <form [formGroup]="commentForm" class="comment-form">
+    <div class="form-group">
+      <textarea
+        class="form-control"
+        id="comment"
+        rows="3"
+        name="comment"
+        placeholder="Write a comment..."
+        formControlName="content"
+        #commentInput
+      ></textarea>
+      <div class="comment-form-footer">
+        <div
+          class="char-counter"
+          [style.color]="
+            (commentForm.controls.content.value ?? '').length < 6
+              ? 'red'
+              : 'black'
+          "
+        >
+          {{ (commentForm.controls.content.value ?? "").length }} / 1000
+        </div>
+
+        <button
+          type="submit"
+          class="btn primary-button submission-button"
+          (click)="comment()"
+          [disabled]="!commentForm.valid"
+        >
+          Comment
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<div *ngFor="let comment of comments" class="comments mt-3">
+  <app-comment
+    [comment]="comment"
+    (viewRequested)="openCommentView($event)"
+    (commentDeleted)="removeComment($event)"
+  ></app-comment>
+</div>
+
+<div
+  *ngIf="!noMoreComments && comments.length > 0"
+  class="text-center mt-3 mb-3"
+>
+  <button
+    (click)="loadMoreComments()"
+    class="btn btn-primary btn-dark resized-rounded-button"
+  >
+    See more
+  </button>
+</div>
+
+<div *ngIf="comments.length === 0" class="text-center mt-3">
+  <p>No comments yet</p>
+</div>

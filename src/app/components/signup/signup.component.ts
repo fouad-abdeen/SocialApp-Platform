@@ -3,7 +3,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
-import { SignupRequest } from '../../core/types/api-requests';
+import { SignupRequest } from '../../core/types/api-request.type';
 import { CommonModule, Location } from '@angular/common';
 
 @Component({

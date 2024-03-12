@@ -1,10 +1,11 @@
+import { Location } from '@angular/common';
 import {
   HttpClient,
   HttpErrorResponse,
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BaseResponse, Post } from '@core/types/api-responses';
+import { BaseResponse, Comment, Post } from '@core/types/api-response.type';
 import { environment } from '@env/environment';
 
 @Injectable({
@@ -13,7 +14,7 @@ import { environment } from '@env/environment';
 export class PostService {
   private readonly baseUrl = `${environment.serverUrl}/posts`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private location: Location) {}
 
   submit(
     content: string,
@@ -64,6 +65,58 @@ export class PostService {
       });
   }
 
+  comment(
+    postId: string,
+    content: string,
+    callback: (response: HttpResponse<BaseResponse<Comment>>) => void
+  ): void {
+    this.http
+      .post<BaseResponse<Comment>>(
+        `${this.baseUrl}/${postId}/comment`,
+        { content },
+        {
+          withCredentials: true,
+          observe: 'response',
+        }
+      )
+      .subscribe({
+        next: callback.bind(this),
+        error: (errorResponse: HttpErrorResponse) => {
+          alert(errorResponse.error.error.message);
+        },
+      });
+  }
+
+  update(postId: string, content: string, callback: () => void): void {
+    this.http
+      .patch(
+        `${this.baseUrl}/${postId}`,
+        { content },
+        {
+          withCredentials: true,
+        }
+      )
+      .subscribe({
+        next: callback,
+        error: (errorResponse: HttpErrorResponse) => {
+          alert(errorResponse.error.error.message);
+        },
+      });
+  }
+
+  delete(postId: string, callback: () => void): void {
+    this.http
+      .delete(`${this.baseUrl}/${postId}`, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: callback,
+        error: (errorResponse: HttpErrorResponse) => {
+          alert(errorResponse.error.error.message);
+        },
+      });
+  }
+
   getTimelinePosts(
     callback: (response: HttpResponse<BaseResponse<Post[]>>) => void,
     lastPostId?: string
@@ -90,7 +143,7 @@ export class PostService {
   ): void {
     this.http
       .get<BaseResponse<Post[]>>(
-        `${this.baseUrl}/${userId}?limit=5${
+        `${this.baseUrl}/user/${userId}?limit=5${
           lastPostId ? `&lastDocumentId=${lastPostId}` : ''
         }`,
         {
@@ -100,6 +153,24 @@ export class PostService {
       )
       .subscribe({
         next: callback.bind(this),
+      });
+  }
+
+  getPostById(
+    postId: string,
+    callback: (response: HttpResponse<BaseResponse<Post>>) => void
+  ): void {
+    this.http
+      .get<BaseResponse<Post>>(`${this.baseUrl}/${postId}`, {
+        withCredentials: true,
+        observe: 'response',
+      })
+      .subscribe({
+        next: callback.bind(this),
+        error: () => {
+          alert('The requested post could not be found.');
+          this.location.back();
+        },
       });
   }
 }

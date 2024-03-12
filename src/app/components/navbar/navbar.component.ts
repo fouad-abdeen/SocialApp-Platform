@@ -9,7 +9,7 @@ import {
   BaseResponse,
   UserResponse,
   UserSearch,
-} from '@core/types/api-responses';
+} from '@core/types/api-response.type';
 import { environment } from '@env/environment';
 import { getAvatar } from '@core/utils';
 

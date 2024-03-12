@@ -7,7 +7,7 @@ import {
   BaseResponse,
   UserResponse,
   UserSearch,
-} from '@core/types/api-responses';
+} from '@core/types/api-response.type';
 import { getAvatar } from '@core/utils';
 
 @Component({

@@ -1,6 +1,10 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BaseResponse, UserResponse, UserSearch } from '../types/api-responses';
+import {
+  BaseResponse,
+  UserResponse,
+  UserSearch,
+} from '../types/api-response.type';
 import { Location } from '@angular/common';
 import { environment } from '@env/environment';
 

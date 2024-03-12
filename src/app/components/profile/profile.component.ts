@@ -2,7 +2,11 @@ import { Component, HostListener } from '@angular/core';
 import { PostComponent } from '../post/post.component';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '@core/services/user.service';
-import { BaseResponse, Post, UserResponse } from '@core/types/api-responses';
+import {
+  BaseResponse,
+  Post,
+  UserResponse,
+} from '@core/types/api-response.type';
 import { HttpResponse } from '@angular/common/http';
 import { getAvatar } from '@core/utils';
 import { CommonModule } from '@angular/common';
@@ -58,16 +62,12 @@ export class ProfileComponent {
       return;
     }
 
-    console.log('id', this.user.id);
-
     this.loading = true;
 
     this.postService.getUserPosts(
       this.user.id,
       (response: HttpResponse<BaseResponse<Post[]>>) => {
         const { data } = response.body ?? {};
-
-        console.log('data', data);
 
         if (!data || (data && data.length === 0)) {
           this.loading = false;
@@ -82,6 +82,14 @@ export class ProfileComponent {
       },
       this.lastPostId
     );
+  }
+
+  addPost(post: Post) {
+    this.posts = [post, ...this.posts];
+  }
+
+  removePost(postId: string) {
+    this.posts = this.posts.filter((post) => post.id !== postId);
   }
 
   @HostListener('window:scroll', [])

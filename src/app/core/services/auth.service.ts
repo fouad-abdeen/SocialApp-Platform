@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginRequest, SignupRequest } from '../types/api-requests';
-import { BaseResponse, UserResponse } from '../types/api-responses';
+import { LoginRequest, SignupRequest } from '../types/api-request.type';
+import { BaseResponse, UserResponse } from '../types/api-response.type';
 import { Router } from '@angular/router';
 import { environment } from '@env/environment';
 import { UserService } from './user.service';

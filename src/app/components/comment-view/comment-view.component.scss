@@ -1,0 +1,43 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reply-form {
+  margin-top: 10px;
+  border: 1px solid #e1e8ed;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.reply-form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+textarea {
+  border: none;
+  resize: none;
+  max-height: 75px;
+}
+
+@media screen and (max-width: 375px) {
+  .reply-form {
+    min-width: 200px;
+  }
+}
+
+@media screen and (min-width: 376px) and (max-width: 475px) {
+  .reply-form {
+    min-width: 300px;
+  }
+}
+
+@media screen and (min-width: 476px) {
+  .reply-form {
+    min-width: 450px;
+  }
+}

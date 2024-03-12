@@ -9,3 +9,11 @@ export function getAvatar(avatar?: string): string {
 export function getImage(image: string): string {
   return `${environment.serverUrl}/files?id=${image}`;
 }
+
+export function calculatePassedMinutes(dateString: string) {
+  const date = new Date(dateString),
+    now = new Date();
+  const differenceInMilliseconds = now.getTime() - date.getTime();
+  const differenceInMinutes = Math.floor(differenceInMilliseconds / 1000 / 60);
+  return differenceInMinutes;
+}

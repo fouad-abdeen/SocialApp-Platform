@@ -40,3 +40,20 @@ export class Post {
   createdAt!: string;
   updatedAt!: string;
 }
+
+export class Comment {
+  id!: string;
+  user!: {
+    username: string;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+  };
+  post!: string;
+  content!: string;
+  likes!: string[];
+  replies!: string[];
+  replyTo!: string;
+  createdAt!: string;
+  updatedAt!: string;
+}
