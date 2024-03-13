@@ -5,13 +5,14 @@ import { BaseResponse, Comment, Post } from '@core/types/api-response.type';
 import { getAvatar } from '@core/utils';
 import { PostService } from '@core/services/post.service';
 import { HttpResponse } from '@angular/common/http';
-import { PostComponent } from '../post/post.component';
-import { CommentComponent } from '../comment/comment.component';
+import { PostComponent } from '../shared/post/post.component';
+import { CommentComponent } from '../shared/comment/comment.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommentService } from '@core/services/comment.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommentViewEvent } from '@core/types/miscellaneous.type';
 import { CommentViewComponent } from '../comment-view/comment-view.component';
+import { LoadingService } from '@core/services/loading.service';
 
 @Component({
   selector: 'app-post-view',
@@ -52,15 +53,17 @@ export class PostViewComponent {
     private postService: PostService,
     private commentService: CommentService,
     private modal: NgbModal,
-    public router: Router
+    public router: Router,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit() {
     const postId = <string>this.route.snapshot.paramMap.get('postId');
-
+    this.loadingService.show();
     this.postService.getPostById(
       postId,
       (response: HttpResponse<BaseResponse<Post>>) => {
+        this.loadingService.hide();
         this.post = <Post>(response.body && response.body.data);
         this.loadMoreComments();
       }

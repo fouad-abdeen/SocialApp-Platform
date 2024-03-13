@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { SignupRequest } from '../../core/types/api-request.type';
 import { CommonModule, Location } from '@angular/common';
+import { LoadingService } from '@core/services/loading.service';
 
 @Component({
   selector: 'app-signup',
@@ -29,8 +30,16 @@ export class SignupComponent {
   showPassword = false;
   signedUp = false;
 
-  constructor(private authService: AuthService, public location: Location) {
+  constructor(
+    private authService: AuthService,
+    private loadingService: LoadingService,
+    public location: Location
+  ) {
     this.signupRequest = new SignupRequest();
+  }
+
+  ngOnInit(): void {
+    this.loadingService.hide();
   }
 
   signup(): void {

@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import { LoadingService } from '@core/services/loading.service';
 import { UserService } from '@core/services/user.service';
 
 @Component({
@@ -29,10 +30,15 @@ export class ResetPasswordComponent {
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private loadingService: LoadingService,
     private route: ActivatedRoute,
     private router: Router,
     public location: Location
   ) {}
+
+  ngOnInit(): void {
+    this.loadingService.hide();
+  }
 
   isAuthenticatedUser(): boolean {
     return this.userService.isAuthenticated();

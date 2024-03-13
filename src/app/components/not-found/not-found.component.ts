@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoadingService } from '@core/services/loading.service';
 
 @Component({
   selector: 'app-not-found',
@@ -25,4 +26,10 @@ import { Component } from '@angular/core';
     `,
   ],
 })
-export class NotFoundComponent {}
+export class NotFoundComponent {
+  constructor(private loadingService: LoadingService) {}
+
+  ngOnInit(): void {
+    this.loadingService.hide();
+  }
+}

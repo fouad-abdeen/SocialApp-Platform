@@ -1,4 +1,8 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpResponse,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   BaseResponse,
@@ -7,6 +11,7 @@ import {
 } from '../types/api-response.type';
 import { Location } from '@angular/common';
 import { environment } from '@env/environment';
+import { ProfileEditRequest } from '@core/types/api-request.type';
 
 @Injectable({
   providedIn: 'root',
@@ -84,9 +89,8 @@ export class UserService {
       .subscribe({
         next: () => {
           const user = this.get();
-          user.followings.push(userId);
-          localStorage.setItem('user', JSON.stringify(user));
-          this.set(user);
+          const followings = [...user.followings, userId];
+          this.set({ ...user, followings });
           callback();
         },
       });
@@ -100,10 +104,74 @@ export class UserService {
       .subscribe({
         next: () => {
           const user = this.get();
-          user.followings = this.user.followings.filter((id) => id !== userId);
-          localStorage.setItem('user', JSON.stringify(user));
-          this.set(user);
+          const followings = this.user.followings.filter((id) => id !== userId);
+          this.set({ ...user, followings });
           callback();
+        },
+      });
+  }
+
+  updateAvatar(
+    avatar: File,
+    successCallback: () => void,
+    errorCallback: () => void
+  ): void {
+    const formData = new FormData();
+    formData.append('avatar', avatar);
+    this.http
+      .post<BaseResponse<{ fileId: string }>>(
+        `${this.baseUrl}/avatar`,
+        formData,
+        {
+          withCredentials: true,
+          observe: 'response',
+        }
+      )
+      .subscribe({
+        next: (response) => {
+          const user = this.get();
+          const avatar = <string>(response.body && response.body.data.fileId);
+          this.set({ ...user, avatar });
+          successCallback();
+        },
+        error: (errorResponse: HttpErrorResponse) => {
+          alert(errorResponse.error.error.message);
+          errorCallback();
+        },
+      });
+  }
+
+  deleteAvatar(callback: () => void): void {
+    this.http
+      .delete<BaseResponse<null>>(`${this.baseUrl}/avatar`, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: () => {
+          const user = this.get();
+          this.set({ ...user, avatar: '' });
+          callback();
+        },
+      });
+  }
+
+  editProfile(
+    profile: ProfileEditRequest,
+    successCallback: (
+      response: HttpResponse<BaseResponse<UserResponse>>
+    ) => void,
+    errorCallback: () => void
+  ): void {
+    this.http
+      .patch<BaseResponse<UserResponse>>(`${this.baseUrl}/profile`, profile, {
+        withCredentials: true,
+        observe: 'response',
+      })
+      .subscribe({
+        next: successCallback.bind(this),
+        error: (errorResponse: HttpErrorResponse) => {
+          alert(errorResponse.error.error.message);
+          errorCallback();
         },
       });
   }

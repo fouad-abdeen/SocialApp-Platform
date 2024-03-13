@@ -1,15 +1,36 @@
 <div class="profile-container">
   <div class="profile-header d-flex">
     <div class="profile-avatar">
-      <img [src]="getAvatar(user.avatar)" alt="Avatar" />
+      <img [src]="getAvatar(user.avatar)" alt="Avatar" #avatar />
     </div>
     <div class="profile-info">
       <div class="d-flex justify-content-start align-items-end mb-3">
         <h1 class="profile-username">{{ user.username }}</h1>
-        <button *ngIf="!user.id" class="primary-button resized-rounded-button">
-          Follow
+        <button
+          *ngIf="user.id !== loggedInUser.id"
+          [class]="
+            (this.loggedInUser.followings.includes(user.id)
+              ? 'danger-button'
+              : 'primary-button') + ' btn resized-rounded-button'
+          "
+          (click)="
+            this.loggedInUser.followings.includes(user.id)
+              ? unfollowUser()
+              : followUser()
+          "
+          #followingButton
+        >
+          {{
+            this.loggedInUser.followings.includes(user.id)
+              ? "Unfollow"
+              : "Follow"
+          }}
         </button>
-        <button *ngIf="user.id" class="dark-button resized-rounded-button">
+        <button
+          *ngIf="loggedInUser.id === user.id"
+          class="dark-button resized-rounded-button"
+          (click)="editProfile()"
+        >
           Edit Profile
         </button>
       </div>
@@ -24,7 +45,7 @@
         </div>
         <div class="profile-stat">
           <span class="stat-number">{{ user.followings.length }}</span>
-          <span class="stat-label">Following</span>
+          <span class="stat-label">Followings</span>
         </div>
       </div>
       <h2 class="profile-fullname mb-3">

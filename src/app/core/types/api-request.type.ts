@@ -10,3 +10,9 @@ export class SignupRequest {
   firstName!: string;
   lastName!: string;
 }
+
+export class ProfileEditRequest {
+  firstName?: string;
+  lastName?: string;
+  bio?: string;
+}

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { LoadingService } from '@core/services/loading.service';
 import { UserService } from '@core/services/user.service';
 import {
   BaseResponse,
@@ -28,10 +29,12 @@ export class SearchResultsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit() {
+    this.loadingService.show();
     this.route.queryParams.subscribe((params) => {
       this.query = params['query'];
       this.loadMoreResults();
@@ -70,17 +73,11 @@ export class SearchResultsComponent {
           return;
         }
 
+        this.loadingService.hide();
         this.searchResults = [...this.searchResults, ...data];
         this.lastDocumentId = data[data.length - 1].id;
         this.loading = false;
       }
     );
   }
-
-  // @HostListener('window:scroll', [])
-  // onScroll(): void {
-  //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-  //     this.loadMoreResults();
-  //   }
-  // }
 }

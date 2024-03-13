@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import { LoadingService } from '@core/services/loading.service';
 
 @Component({
   selector: 'app-email-verification',
@@ -40,10 +41,12 @@ export class EmailVerificationComponent {
 
   constructor(
     private authService: AuthService,
+    private loadingService: LoadingService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.loadingService.hide();
     const { token } = this.route.snapshot.queryParams;
     this.authService.verifyEmailAddress(token, () => {
       this.illustration = '../../../assets/images/email-verified.png';

@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import { LoadingService } from '@core/services/loading.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -27,7 +28,15 @@ export class ForgotPasswordComponent {
   email = '';
   requestedPasswordReset = false;
 
-  constructor(private authService: AuthService, public location: Location) {}
+  constructor(
+    private authService: AuthService,
+    private loadingService: LoadingService,
+    public location: Location
+  ) {}
+
+  ngOnInit(): void {
+    this.loadingService.hide();
+  }
 
   requestPasswordReset(): void {
     this.authService.requestPasswordReset(this.email, () => {

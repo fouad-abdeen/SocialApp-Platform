@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PostService } from '../../core/services/post.service';
+import { PostService } from '../../../core/services/post.service';
 import { HttpClientModule, HttpResponse } from '@angular/common/http';
 import { UserService } from '@core/services/user.service';
 import { BaseResponse, Post } from '@core/types/api-response.type';

@@ -1,5 +1,5 @@
-import { Component, HostListener } from '@angular/core';
-import { PostComponent } from '../post/post.component';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { PostComponent } from '../shared/post/post.component';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '@core/services/user.service';
 import {
@@ -10,8 +10,11 @@ import {
 import { HttpResponse } from '@angular/common/http';
 import { getAvatar } from '@core/utils';
 import { CommonModule } from '@angular/common';
-import { PostSubmitComponent } from '../post-submit/post-submit.component';
+import { PostSubmitComponent } from '../shared/post-submit/post-submit.component';
 import { PostService } from '@core/services/post.service';
+import { LoadingService } from '@core/services/loading.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProfileEditComponent } from '../profile-edit/profile-edit.component';
 
 @Component({
   selector: 'app-profile',
@@ -21,8 +24,9 @@ import { PostService } from '@core/services/post.service';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
+  @ViewChild('avatar') avatar!: ElementRef;
   loggedInUser = <UserResponse>{};
-  user = <UserResponse>{};
+  user = <UserResponse>{ posts: [''], followers: [''], followings: [''] };
   getAvatar = getAvatar;
   posts: Post[] = [];
   loading = false;
@@ -32,30 +36,72 @@ export class ProfileComponent {
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private postService: PostService
+    private postService: PostService,
+    private loadingService: LoadingService,
+    private modal: NgbModal
   ) {}
 
   ngOnInit() {
     const username = <string>this.route.snapshot.paramMap.get('username');
-    const loggedInUser = this.userService.get();
+    this.loggedInUser = this.userService.get();
+    this.loadingService.show();
 
-    if (username === loggedInUser.username) {
-      this.loggedInUser = loggedInUser;
+    if (username === this.loggedInUser.username) {
+      this.loadingService.hide();
       this.user = this.loggedInUser;
       this.loadMorePosts();
     } else
       this.userService.getByUsername(
         username,
         (response: HttpResponse<BaseResponse<UserResponse>>) => {
+          this.loadingService.hide();
           this.user = <UserResponse>(response.body && response.body.data);
           this.loadMorePosts();
         }
       );
   }
 
-  editAvatar() {}
+  followUser(): void {
+    if (this.loggedInUser.followings.includes(this.user.id)) return;
+    this.userService.follow(this.user.id, () => {
+      this.user.followers.push(this.loggedInUser.id);
+      this.loggedInUser.followings.push(this.user.id);
+      this.userService.set(this.loggedInUser);
+    });
+  }
 
-  deleteAvatar() {}
+  unfollowUser(): void {
+    if (!this.loggedInUser.followings.includes(this.user.id)) return;
+    this.userService.unfollow(this.user.id, () => {
+      this.user.followers = this.user.followers.filter(
+        (followerId) => followerId !== this.loggedInUser.id
+      );
+      this.loggedInUser.followings = this.loggedInUser.followings.filter(
+        (followingId) => followingId !== this.user.id
+      );
+      this.userService.set(this.loggedInUser);
+    });
+  }
+
+  editProfile(): void {
+    if (this.user.id !== this.loggedInUser.id) return;
+    const modalRef = this.modal.open(ProfileEditComponent, {
+      scrollable: true,
+      backdrop: 'static',
+      keyboard: false,
+    });
+    modalRef.componentInstance.user = { ...this.user };
+    modalRef.componentInstance.avatar = this.avatar.nativeElement.src;
+    modalRef.componentInstance.avatarUpdated.subscribe((avatar: string) => {
+      this.avatar.nativeElement.src = avatar;
+    });
+    modalRef.componentInstance.avatarDeleted.subscribe(() => {
+      this.avatar.nativeElement.src = getAvatar();
+    });
+    modalRef.componentInstance.profileEdited.subscribe((user: UserResponse) => {
+      this.user = user;
+    });
+  }
 
   loadMorePosts() {
     if (this.loading || this.noMorePosts) {

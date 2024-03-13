@@ -1,11 +1,12 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { PostComponent } from '../post/post.component';
-import { PostSubmitComponent } from '../post-submit/post-submit.component';
+import { PostComponent } from '../shared/post/post.component';
+import { PostSubmitComponent } from '../shared/post-submit/post-submit.component';
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { BaseResponse, Post } from '@core/types/api-response.type';
 import { PostService } from '@core/services/post.service';
 import { Router } from '@angular/router';
+import { LoadingService } from '@core/services/loading.service';
 
 @Component({
   selector: 'app-home',
@@ -20,9 +21,14 @@ export class HomeComponent {
   noMorePosts = false;
   lastPostId: string | undefined;
 
-  constructor(private postService: PostService, private router: Router) {}
+  constructor(
+    private postService: PostService,
+    private router: Router,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit() {
+    this.loadingService.show();
     this.loadMorePosts();
   }
 
@@ -47,6 +53,7 @@ export class HomeComponent {
           return;
         }
 
+        this.loadingService.hide();
         this.posts = [...this.posts, ...data];
         this.lastPostId = data[data.length - 1].id;
         this.loading = false;

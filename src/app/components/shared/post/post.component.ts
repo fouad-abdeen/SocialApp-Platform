@@ -119,7 +119,8 @@ export class PostComponent {
     if (leftMinutesForUpdate > 0)
       this.updateButton.nativeElement.title = `${leftMinutesForUpdate} minutes left to update`;
     else {
-      this.updateButton.nativeElement.title = 'You can not update this post';
+      this.updateButton.nativeElement.title =
+        'You can not update a post after 60 minutes of submission';
       this.updateButton.nativeElement.style.cursor = 'not-allowed';
       this.cannotUpdate = true;
     }

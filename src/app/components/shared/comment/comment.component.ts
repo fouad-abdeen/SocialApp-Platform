@@ -126,7 +126,8 @@ export class CommentComponent {
     if (leftMinutesForUpdate > 0)
       this.updateButton.nativeElement.title = `${leftMinutesForUpdate} minutes left to update`;
     else {
-      this.updateButton.nativeElement.title = 'You can not update this comment';
+      this.updateButton.nativeElement.title =
+        'You can not update a comment after 30 minutes of submission';
       this.updateButton.nativeElement.style.cursor = 'not-allowed';
       this.cannotUpdate = true;
     }

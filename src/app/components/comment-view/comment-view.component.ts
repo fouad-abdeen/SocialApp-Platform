@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { BaseResponse, Comment } from '@core/types/api-response.type';
 import { NgbActiveModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { CommentComponent } from '../comment/comment.component';
+import { CommentComponent } from '../shared/comment/comment.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { getAvatar } from '@core/utils';
 import { CommentService } from '@core/services/comment.service';
