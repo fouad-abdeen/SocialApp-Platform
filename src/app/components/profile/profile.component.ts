@@ -15,6 +15,8 @@ import { PostService } from '@core/services/post.service';
 import { LoadingService } from '@core/services/loading.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileEditComponent } from '../profile-edit/profile-edit.component';
+import { ConnectionsListComponent } from '../connections-list/connections-list.component';
+import { AccountSettingsComponent } from '../account-settings/account-settings.component';
 
 @Component({
   selector: 'app-profile',
@@ -43,6 +45,9 @@ export class ProfileComponent {
 
   ngOnInit() {
     const username = <string>this.route.snapshot.paramMap.get('username');
+
+    if (!username) return;
+
     this.loggedInUser = this.userService.get();
     this.loadingService.show();
 
@@ -101,6 +106,36 @@ export class ProfileComponent {
     modalRef.componentInstance.profileEdited.subscribe((user: UserResponse) => {
       this.user = user;
     });
+  }
+
+  openAccountSettings() {
+    const modalRef = this.modal.open(AccountSettingsComponent, {
+      scrollable: true,
+      backdrop: 'static',
+      keyboard: false,
+    });
+  }
+
+  seeFollowers() {
+    const modalRef = this.modal.open(ConnectionsListComponent, {
+      scrollable: true,
+      backdrop: 'static',
+      keyboard: false,
+    });
+    modalRef.componentInstance.connectionsType = 'followers';
+    modalRef.componentInstance.userId = this.user.id;
+    modalRef.componentInstance.firstName = this.user.firstName;
+  }
+
+  seeFollowings() {
+    const modalRef = this.modal.open(ConnectionsListComponent, {
+      scrollable: true,
+      backdrop: 'static',
+      keyboard: false,
+    });
+    modalRef.componentInstance.connectionsType = 'followings';
+    modalRef.componentInstance.userId = this.user.id;
+    modalRef.componentInstance.firstName = this.user.firstName;
   }
 
   loadMorePosts() {

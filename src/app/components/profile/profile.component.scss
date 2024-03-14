@@ -55,6 +55,11 @@
   color: #888;
 }
 
+.profile-action {
+  font-size: large;
+  cursor: pointer;
+}
+
 @media (max-width: 575px) {
   .profile-header {
     flex-direction: column;
@@ -71,5 +76,15 @@
 
   .profile-stat {
     margin-right: 0;
+  }
+
+  .profile-username {
+    margin-right: 100px;
+  }
+}
+
+@media (min-width: 576px) {
+  .profile-username {
+    margin-right: 150px;
   }
 }

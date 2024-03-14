@@ -25,9 +25,9 @@
       <div class="post-submit-icons">
         <input
           type="file"
-          #imageInput
           style="display: none"
           (change)="onFileChange($event)"
+          #imageInput
         />
         <i class="far fa-image" (click)="imageInput.click()"></i>
         <span *ngIf="selectedFileName">

@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { NgModule, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'truncate',
@@ -31,3 +31,9 @@ export class TruncatePipe implements PipeTransform {
     return `${truncatedValue}... <i class="${expandIcon}"></i>`;
   }
 }
+
+@NgModule({
+  declarations: [TruncatePipe],
+  exports: [TruncatePipe],
+})
+export class PipesModule {}

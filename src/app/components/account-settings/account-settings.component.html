@@ -1,0 +1,85 @@
+<div class="modal-header">
+  <h4 class="modal-title">Account Settings</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="closeModal()"
+  ></button>
+</div>
+<div class="modal-body">
+  <div class="list-group">
+    <button
+      type="button"
+      class="list-group-item list-group-item-action"
+      (click)="showPasswordUpdateForm = !showPasswordUpdateForm"
+    >
+      Update Password
+    </button>
+  </div>
+
+  <div *ngIf="showPasswordUpdateForm" class="mt-4 mb-4">
+    <form (submit)="updatePassword()">
+      <div class="mb-3">
+        <label for="currentPassword" class="form-label">Current Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="currentPassword"
+          name="currentPassword"
+          [(ngModel)]="updatePasswordForm.currentPassword"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="newPassword" class="form-label">New Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="newPassword"
+          name="newPassword"
+          [(ngModel)]="updatePasswordForm.newPassword"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="confirmPassword"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+        />
+      </div>
+
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="logoutAllSessions"
+          name="logoutAllSessions"
+          [(ngModel)]="updatePasswordForm.terminateAllSessions"
+        />
+        <label class="form-check-label" for="logoutAllSessions">
+          Log me out of all devices
+        </label>
+      </div>
+
+      <button
+        type="submit"
+        class="btn primary-button resized-rounded-button mt-2"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn dark-button resized-rounded-button"
+      (click)="closeModal()"
+    >
+      Close
+    </button>
+  </div>
+</div>

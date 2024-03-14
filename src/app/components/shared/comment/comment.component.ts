@@ -8,18 +8,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { PipesModule } from '@core/modules/pipes.module';
-import { CommentService } from '@core/services/comment.service';
+import { PipesModule } from '@core/pipes/truncate.pipe';
 import { UserService } from '@core/services/user.service';
 import { Comment } from '@core/types/api-response.type';
 import { calculatePassedMinutes, getAvatar } from '@core/utils';
 import { CommentViewEvent } from '@core/types/miscellaneous.type';
-import {
-  FormBuilder,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommentService } from '@core/services/comment.service';
 
 @Component({
   selector: 'app-comment',

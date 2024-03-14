@@ -4,7 +4,7 @@
       <img [src]="getAvatar(user.avatar)" alt="Avatar" #avatar />
     </div>
     <div class="profile-info">
-      <div class="d-flex justify-content-start align-items-end mb-3">
+      <div class="d-flex mb-3">
         <h1 class="profile-username">{{ user.username }}</h1>
         <button
           *ngIf="user.id !== loggedInUser.id"
@@ -26,13 +26,18 @@
               : "Follow"
           }}
         </button>
-        <button
-          *ngIf="loggedInUser.id === user.id"
-          class="dark-button resized-rounded-button"
-          (click)="editProfile()"
-        >
-          Edit Profile
-        </button>
+        <div>
+          <i
+            *ngIf="loggedInUser.id === user.id"
+            class="fas fa-pen profile-action me-2"
+            (click)="editProfile()"
+          ></i>
+          <i
+            *ngIf="loggedInUser.id === user.id"
+            class="fas fa-cog profile-action"
+            (click)="openAccountSettings()"
+          ></i>
+        </div>
       </div>
       <div class="profile-stats mb-3">
         <div class="profile-stat">
@@ -41,11 +46,21 @@
         </div>
         <div class="profile-stat">
           <span class="stat-number">{{ user.followers.length }}</span>
-          <span class="stat-label">Followers</span>
+          <span
+            class="stat-label"
+            style="cursor: pointer"
+            (click)="seeFollowers()"
+            >Followers</span
+          >
         </div>
         <div class="profile-stat">
           <span class="stat-number">{{ user.followings.length }}</span>
-          <span class="stat-label">Followings</span>
+          <span
+            class="stat-label"
+            style="cursor: pointer"
+            (click)="seeFollowings()"
+            >Followings</span
+          >
         </div>
       </div>
       <h2 class="profile-fullname mb-3">
@@ -59,7 +74,7 @@
 <hr />
 
 <div
-  *ngIf="loggedInUser.id"
+  *ngIf="loggedInUser.id === user.id"
   class="d-flex flex-column flex-lg-row justify-content-center align-items-center"
 >
   <div class="illustration">
@@ -75,7 +90,7 @@
   ></app-post-submit>
 </div>
 
-<hr *ngIf="loggedInUser.id" />
+<hr *ngIf="loggedInUser.id === user.id" />
 
 <div *ngFor="let post of posts">
   <app-post

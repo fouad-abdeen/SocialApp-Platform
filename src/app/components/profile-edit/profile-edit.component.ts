@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { LoadingService } from '@core/services/loading.service';
 import { UserService } from '@core/services/user.service';
 import { UserResponse } from '@core/types/api-response.type';
+import { Profile } from '@core/types/miscellaneous.type';
 import { getAvatar } from '@core/utils';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -29,13 +30,18 @@ export class ProfileEditComponent {
   @Output() profileEdited = new EventEmitter<UserResponse>();
   @ViewChild('avatarImage') avatarImage!: ElementRef;
   @ViewChild('avatarInput') avatarInput!: ElementRef;
-  style = 'display: none';
+  profile = <Profile>{};
 
   constructor(
     private userService: UserService,
     private loadingService: LoadingService,
     private activeModal: NgbActiveModal
   ) {}
+
+  ngOnInit() {
+    const { firstName, lastName, bio } = this.user;
+    this.profile = { firstName, lastName, bio };
+  }
 
   updateAvatar(event: any) {
     if (event.target.files && event.target.files.length) {
@@ -74,11 +80,7 @@ export class ProfileEditComponent {
   editProfile() {
     this.loadingService.show();
     this.userService.editProfile(
-      {
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        bio: this.user.bio,
-      },
+      this.profile,
       () => {
         this.loadingService.hide();
         this.profileEdited.emit(this.user);
@@ -91,10 +93,16 @@ export class ProfileEditComponent {
   }
 
   closeModal() {
-    // const close = window.confirm(
-    //   'Are you sure you want to discard your changes?'
-    // );
-    // if (!close) return;
+    if (
+      this.profile.firstName !== this.user.firstName ||
+      this.profile.lastName !== this.user.lastName ||
+      this.profile.bio !== this.user.bio
+    ) {
+      const confirmClose = confirm(
+        'Are you sure you want to close without saving changes?'
+      );
+      if (!confirmClose) return;
+    }
     this.activeModal.close('Close click');
   }
 }

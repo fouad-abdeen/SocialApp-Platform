@@ -16,3 +16,9 @@ export class ProfileEditRequest {
   lastName?: string;
   bio?: string;
 }
+
+export class UpdatePasswordRequest {
+  currentPassword!: string;
+  newPassword!: string;
+  terminateAllSessions!: boolean;
+}

@@ -61,6 +61,40 @@ export class UserService {
       });
   }
 
+  getFollowers(
+    callback: (response: HttpResponse<BaseResponse<UserResponse[]>>) => void,
+    userId?: string,
+    lastDocumentId?: string
+  ): void {
+    this.http
+      .get<BaseResponse<UserResponse[]>>(
+        `${this.baseUrl}/followers?limit=10${
+          userId ? `&userId=${userId}` : ''
+        }${lastDocumentId ? `&lastDocumentId=${lastDocumentId}` : ''}`,
+        { withCredentials: true, observe: 'response' }
+      )
+      .subscribe({
+        next: callback.bind(this),
+      });
+  }
+
+  getFollowings(
+    callback: (response: HttpResponse<BaseResponse<UserResponse[]>>) => void,
+    userId?: string,
+    lastDocumentId?: string
+  ): void {
+    this.http
+      .get<BaseResponse<UserResponse[]>>(
+        `${this.baseUrl}/followings?limit=10${
+          userId ? `&userId=${userId}` : ''
+        }${lastDocumentId ? `&lastDocumentId=${lastDocumentId}` : ''}`,
+        { withCredentials: true, observe: 'response' }
+      )
+      .subscribe({
+        next: callback.bind(this),
+      });
+  }
+
   search(
     usernameQuery: string,
     lastDocumentId: string | undefined,

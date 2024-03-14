@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { PipesModule } from '@core/modules/pipes.module';
+import { PipesModule } from '@core/pipes/truncate.pipe';
 import { PostService } from '@core/services/post.service';
 import { UserService } from '@core/services/user.service';
 import { Post, UserResponse } from '@core/types/api-response.type';
@@ -66,12 +66,6 @@ export class PostComponent {
     this.post.likes.includes(user.id) && (this.isLiked = true);
   }
 
-  ngAfterViewInit() {
-    this.updateForm.setValue({
-      content: this.post.content,
-    });
-  }
-
   like(postId: string) {
     this.postService.like(postId, () => {
       this.isLiked = true;
@@ -97,7 +91,7 @@ export class PostComponent {
   }
 
   delete() {
-    const canDelete = confirm('Are you sure you want to delete this comment?');
+    const canDelete = confirm('Are you sure you want to delete this post?');
     if (!canDelete) return;
     this.postService.delete(this.post.id, () => {
       this.postDeleted.emit(this.post.id);
@@ -109,6 +103,9 @@ export class PostComponent {
       this.updating = false;
       return;
     }
+    this.updateForm.setValue({
+      content: this.post.content,
+    });
     this.updating = !this.updating;
   }
 

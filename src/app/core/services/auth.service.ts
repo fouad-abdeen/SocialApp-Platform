@@ -1,6 +1,14 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpResponse,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginRequest, SignupRequest } from '../types/api-request.type';
+import {
+  LoginRequest,
+  SignupRequest,
+  UpdatePasswordRequest,
+} from '../types/api-request.type';
 import { BaseResponse, UserResponse } from '../types/api-response.type';
 import { Router } from '@angular/router';
 import { environment } from '@env/environment';
@@ -89,6 +97,26 @@ export class AuthService {
       )
       .subscribe({
         next: onSuccess,
+      });
+  }
+
+  updatePassword(request: UpdatePasswordRequest, onSuccess: () => void): void {
+    this.http
+      .put<BaseResponse<null>>(`${this.baseUrl}/password`, request, {
+        withCredentials: true,
+        observe: 'response',
+      })
+      .subscribe({
+        next: () => {
+          onSuccess();
+          if (request.terminateAllSessions) {
+            localStorage.removeItem('user');
+            localStorage.removeItem('userExpiresAt');
+            this.router.navigate(['/']);
+          }
+        },
+        error: (errorResponse: HttpErrorResponse) =>
+          alert(errorResponse.error.error.message),
       });
   }
 

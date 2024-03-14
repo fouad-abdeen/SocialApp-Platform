@@ -1,0 +1,90 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    {{ this.loggedInUser.id === this.userId ? "Your" : this.firstName + "'s" }}
+    {{ connectionsType === "followers" ? "Followers" : "Followings" }}
+  </h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="closeModal()"
+  ></button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="list-group">
+        <div
+          class="list-group-item list-group-item-action"
+          *ngFor="let user of connections"
+        >
+          <a routerLink="/profile/{{ user.username }}" class="no-style-link">
+            <img
+              [src]="getAvatar(user.avatar)"
+              class="avatar rounded-circle me-3"
+              alt="User Avatar"
+            />
+          </a>
+          <div class="d-flex align-items-center justify-content-between w-100">
+            <a routerLink="/profile/{{ user.username }}" class="no-style-link">
+              <div class="user-info">
+                <h5 class="mb-1">{{ user.username }}</h5>
+                <p class="mb-1">{{ user.firstName }} {{ user.lastName }}</p>
+              </div>
+            </a>
+            <button
+              *ngIf="
+                !this.loggedInUser.followings.includes(user.id) &&
+                this.loggedInUser.id !== user.id
+              "
+              class="btn primary-button resized-rounded-button"
+              (click)="followUser(user.id)"
+            >
+              Follow
+            </button>
+            <button
+              *ngIf="
+                this.loggedInUser.followings.includes(user.id) &&
+                this.loggedInUser.id !== user.id
+              "
+              class="btn danger-button resized-rounded-button"
+              (click)="unfollowUser(user.id)"
+            >
+              Unfollow
+            </button>
+          </div>
+        </div>
+        <div *ngIf="connections.length === 0" class="text-center mt-3 mb-3">
+          <h4>No {{ connectionsType }} found</h4>
+        </div>
+        <div
+          *ngIf="connections.length > 0 && !noMoreConnections"
+          class="text-center mt-3"
+        >
+          <button
+            (click)="loadMoreConnections()"
+            class="btn btn-primary resized-rounded-button btn-dark mb-2"
+          >
+            Load more
+          </button>
+        </div>
+        <div
+          *ngIf="connections.length > 0 && noMoreConnections"
+          class="text-center mt-4 mb-4"
+        >
+          <h4>No more results</h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn dark-button resized-rounded-button"
+        (click)="closeModal()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>
