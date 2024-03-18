@@ -105,6 +105,7 @@ export class ProfileComponent {
     });
     modalRef.componentInstance.profileEdited.subscribe((user: UserResponse) => {
       this.user = user;
+      this.userService.set(user);
     });
   }
 

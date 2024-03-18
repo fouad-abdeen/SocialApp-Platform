@@ -83,7 +83,10 @@ export class ProfileEditComponent {
       this.profile,
       () => {
         this.loadingService.hide();
-        this.profileEdited.emit(this.user);
+        this.profileEdited.emit({
+          ...this.user,
+          ...this.profile,
+        });
         this.activeModal.close('Close click');
       },
       () => {
