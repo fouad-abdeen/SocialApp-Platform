@@ -47,13 +47,14 @@ export class HomeComponent {
       (response: HttpResponse<BaseResponse<Post[]>>) => {
         const { data } = response.body ?? {};
 
+        this.loadingService.hide();
+
         if (!data || (data && data.length === 0)) {
           this.loading = false;
           this.noMorePosts = true;
           return;
         }
 
-        this.loadingService.hide();
         this.posts = [...this.posts, ...data];
         this.lastPostId = data[data.length - 1].id;
         this.loading = false;
