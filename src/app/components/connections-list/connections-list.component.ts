@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from '@core/services/user.service';
 import { BaseResponse, UserResponse } from '@core/types/api-response.type';
 import { getAvatar } from '@core/utils';
@@ -27,7 +27,8 @@ export class ConnectionsListComponent {
 
   constructor(
     private userService: UserService,
-    private ActiveModal: NgbActiveModal
+    private ActiveModal: NgbActiveModal,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -45,6 +46,11 @@ export class ConnectionsListComponent {
     this.userService.unfollow(userId, () => {
       this.loggedInUser = this.userService.get();
     });
+  }
+
+  openProfile(username: string) {
+    this.router.navigate([`/profile/${username}`]);
+    this.closeModal();
   }
 
   loadMoreConnections() {

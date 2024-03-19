@@ -18,15 +18,15 @@
           class="list-group-item list-group-item-action"
           *ngFor="let user of connections"
         >
-          <a routerLink="/profile/{{ user.username }}" class="no-style-link">
-            <img
-              [src]="getAvatar(user.avatar)"
-              class="avatar rounded-circle me-3"
-              alt="User Avatar"
-            />
-          </a>
+          <img
+            [src]="getAvatar(user.avatar)"
+            class="avatar rounded-circle me-3"
+            alt="User Avatar"
+            (click)="openProfile(user.username)"
+          />
+
           <div class="d-flex align-items-center justify-content-between w-100">
-            <a routerLink="/profile/{{ user.username }}" class="no-style-link">
+            <a class="no-style-link" (click)="openProfile(user.username)">
               <div class="user-info">
                 <h5 class="mb-1">{{ user.username }}</h5>
                 <p class="mb-1">{{ user.firstName }} {{ user.lastName }}</p>

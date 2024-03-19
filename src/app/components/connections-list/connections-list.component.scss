@@ -19,6 +19,7 @@ h2 {
   width: 50px;
   height: 50px;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .user-info {
@@ -33,6 +34,7 @@ h2 {
 .no-style-link {
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
 }
 
 @media screen and (min-width: 768px) {
