@@ -42,8 +42,8 @@
               | truncate : 100 : 'fas fa-up-right-and-down-left-from-center')
         "
         [style]="viewSource === 'post' ? 'cursor: pointer' : ''"
+        [title]="viewSource === 'post' ? 'View full comment' : ''"
         (click)="viewSource === 'post' ? view('view') : null"
-        title="Click to view full comment"
       ></p>
 
       <form *ngIf="updating" [formGroup]="updateForm" class="update-form">
