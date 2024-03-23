@@ -44,6 +44,7 @@ export class Post {
 export class Comment {
   id!: string;
   user!: {
+    id: string;
     username: string;
     firstName: string;
     lastName: string;

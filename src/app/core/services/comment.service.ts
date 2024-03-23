@@ -41,17 +41,22 @@ export class CommentService {
       });
   }
 
-  reply(commentId: string, content: string, callback: () => void): void {
+  reply(
+    commentId: string,
+    content: string,
+    callback: (response: HttpResponse<BaseResponse<Comment>>) => void
+  ): void {
     this.http
-      .post(
+      .post<BaseResponse<Comment>>(
         `${this.baseUrl}/${commentId}/reply`,
         { content },
         {
           withCredentials: true,
+          observe: 'response',
         }
       )
       .subscribe({
-        next: callback,
+        next: callback.bind(this),
         error: (errorResponse: HttpErrorResponse) => {
           alert(errorResponse.error.error.message);
         },

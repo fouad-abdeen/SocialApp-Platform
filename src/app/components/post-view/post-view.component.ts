@@ -52,9 +52,9 @@ export class PostViewComponent {
     public route: ActivatedRoute,
     private postService: PostService,
     private commentService: CommentService,
+    private loadingService: LoadingService,
     private modal: NgbModal,
-    public router: Router,
-    private loadingService: LoadingService
+    public router: Router
   ) {}
 
   ngOnInit() {

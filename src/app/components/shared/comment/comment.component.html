@@ -43,6 +43,7 @@
         "
         [style]="viewSource === 'post' ? 'cursor: pointer' : ''"
         (click)="viewSource === 'post' ? view('view') : null"
+        title="Click to view full comment"
       ></p>
 
       <form *ngIf="updating" [formGroup]="updateForm" class="update-form">

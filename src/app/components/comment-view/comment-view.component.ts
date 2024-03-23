@@ -14,6 +14,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { getAvatar } from '@core/utils';
 import { CommentService } from '@core/services/comment.service';
 import { HttpResponse } from '@angular/common/http';
+import { UserService } from '@core/services/user.service';
 
 @Component({
   selector: 'app-comment-view',
@@ -51,6 +52,7 @@ export class CommentViewComponent {
   constructor(
     private formBuilder: FormBuilder,
     private commentService: CommentService,
+    private userService: UserService,
     public activeModal: NgbActiveModal
   ) {}
 
@@ -74,7 +76,9 @@ export class CommentViewComponent {
     this.commentService.reply(
       this.comment.id,
       <string>this.replyForm.value.content,
-      () => {
+      (response: HttpResponse<BaseResponse<Comment>>) => {
+        const reply = <Comment>(response.body && response.body.data);
+        this.comment.replies.push(reply.id);
         this.replyForm.reset();
         this.noMoreReplies = false;
         this.loadMoreReplies();
@@ -107,6 +111,11 @@ export class CommentViewComponent {
   }
 
   removeReply(replyId: string) {
+    const reply = this.replies.find((reply) => reply.id === replyId);
+    if (!reply) return;
+    this.comment.replies = this.comment.replies.filter(
+      (replyId) => replyId !== reply.id
+    );
     this.replies = this.replies.filter((reply) => reply.id !== replyId);
   }
 
