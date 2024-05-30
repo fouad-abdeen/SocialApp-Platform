@@ -1,3 +1,11 @@
 <app-navbar *ngIf="userService.isAuthenticated()"></app-navbar>
+
 <app-loading></app-loading>
+
+<div class="alert-container" *ngIf="notficationMessage">
+  <ngb-alert type="info" (closed)="notficationMessage = ''">
+    {{ notficationMessage }}
+  </ngb-alert>
+</div>
+
 <router-outlet></router-outlet>

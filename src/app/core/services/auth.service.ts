@@ -13,6 +13,7 @@ import { BaseResponse, UserResponse } from '../types/api-response.type';
 import { Router } from '@angular/router';
 import { environment } from '@env/environment';
 import { UserService } from './user.service';
+import { SocketService } from './socket.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private socketService: SocketService
   ) {}
 
   private handleAuthentication(
@@ -31,6 +33,7 @@ export class AuthService {
   ): void {
     const user = <UserResponse>(response.body && response.body.data);
     this.userService.set(user);
+    this.socketService.connect(user.id);
   }
 
   login(data: LoginRequest): void {
@@ -54,8 +57,8 @@ export class AuthService {
       })
       .subscribe({
         next: () => {
-          localStorage.removeItem('user');
-          localStorage.removeItem('userExpiresAt');
+          this.userService.unset();
+          this.socketService.disconnect();
           this.router.navigate(['/']);
         },
       });

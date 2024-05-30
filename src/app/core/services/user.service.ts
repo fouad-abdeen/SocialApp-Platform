@@ -31,6 +31,12 @@ export class UserService {
     this.user = user;
   }
 
+  unset(): void {
+    localStorage.removeItem('user');
+    localStorage.removeItem('userExpiresAt');
+    this.user = <UserResponse>{};
+  }
+
   get(): UserResponse {
     if (!this.user.id)
       this.user = <UserResponse>(
